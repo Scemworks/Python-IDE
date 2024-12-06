@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const blob = new Blob([code], { type: 'text/plain' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = 'main.py'; // Name the file as main.py
+        link.download = 'main.py'; // Save as main.py
         link.click(); // Trigger the download
     });
 });
