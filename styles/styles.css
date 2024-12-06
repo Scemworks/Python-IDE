@@ -8,6 +8,7 @@ body {
 .container {
     display: flex;
     height: 100vh;
+    flex-direction: row; /* Default layout for larger screens */
 }
 
 .editor, .output {
@@ -69,3 +70,42 @@ button:hover {
     white-space: pre-wrap;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stack editor and output vertically */
+    }
+
+    .editor, .output {
+        width: 100%; /* Take full width */
+        height: 50%; /* Adjust height for stacked layout */
+        padding: 15px;
+    }
+
+    textarea {
+        height: calc(70% - 20px); /* Reduce height slightly to fit better on smaller screens */
+    }
+
+    #output-window {
+        height: calc(70% - 20px);
+    }
+
+    button {
+        font-size: 14px; /* Slightly smaller button text */
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    h2 {
+        font-size: 18px; /* Adjust heading size for smaller screens */
+    }
+
+    textarea {
+        font-size: 12px; /* Smaller font size for mobile */
+    }
+
+    button {
+        padding: 6px 12px; /* Smaller padding for buttons */
+    }
+}
