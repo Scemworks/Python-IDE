@@ -7,7 +7,7 @@ body {
 
 .container {
     display: flex;
-    height: 100vh;
+    height: calc(100vh - 50px); /* Adjust to allow space for footer */
     flex-direction: row; /* Default layout for larger screens */
 }
 
@@ -108,4 +108,23 @@ button:hover {
     button {
         padding: 6px 12px; /* Smaller padding for buttons */
     }
+}
+
+/* Footer Styling */
+footer {
+    text-align: center;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    font-size: 14px;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
 }
