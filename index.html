@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python IDE</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.11.0/brython.min.js"></script>
+</head>
+<body onload="brython()">
+    <div class="container">
+        <!-- Left Column: Code Editor -->
+        <div class="editor">
+            <h2>Python Code Editor</h2>
+            <textarea id="code-editor" spellcheck="false"></textarea>
+            <button onclick="runCode()">Run</button>
+        </div>
+
+        <!-- Right Column: Output -->
+        <div class="output">
+            <h2>Output</h2>
+            <div id="output-window"></div>
+        </div>
+    </div>
+
+    <script src="scripts/script.js"></script>
+</body>
+</html>
