@@ -12,6 +12,31 @@ document.addEventListener("DOMContentLoaded", function () {
         codeEditor.value = defaultText;
     }
 
+    // Custom input handling
+    window.customInput = async function(message) {
+        const outputElement = document.getElementById("output-window");
+        const inputContainer = document.createElement("div");
+        const inputMessage = document.createElement("span");
+        inputMessage.textContent = message;
+        const inputField = document.createElement("input");
+        inputField.type = "text";
+        inputField.id = "custom-input";
+        inputContainer.appendChild(inputMessage);
+        inputContainer.appendChild(inputField);
+        outputElement.appendChild(inputContainer);
+
+        return new Promise((resolve) => {
+            inputField.addEventListener("keydown", function (e) {
+                if (e.key === "Enter") {
+                    const inputValue = inputField.value;
+                    resolve(inputValue);
+                    outputElement.removeChild(inputContainer);
+                    outputElement.textContent += `${message}${inputValue}\n`;
+                }
+            });
+        });
+    };
+
     async function runCode() {
         const code = codeEditor.value;
         const outputElement = document.getElementById("output-window");
@@ -41,31 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 outputElement.textContent += data;
             };
 
-            // Custom input handling
-            window.customInput = async function(message) {
-                const inputContainer = document.createElement("div");
-                const inputMessage = document.createElement("span");
-                inputMessage.textContent = message;
-                const inputField = document.createElement("input");
-                inputField.type = "text";
-                inputField.id = "custom-input";
-                inputContainer.appendChild(inputMessage);
-                inputContainer.appendChild(inputField);
-                outputElement.appendChild(inputContainer);
-
-                return new Promise((resolve) => {
-                    inputField.addEventListener("keydown", function (e) {
-                        if (e.key === "Enter") {
-                            const inputValue = inputField.value;
-                            resolve(inputValue);
-                            outputElement.removeChild(inputContainer);
-                            outputElement.textContent += `${message}${inputValue}\n`;
-                        }
-                    });
-                });
-            };
-
-            // Override the built-in input function
+            // Override the built-in input function in Brython
             window.prompt = async function(message) {
                 const result = await window.customInput(message);
                 return result;
@@ -73,7 +74,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Prepare the Python code to be executed
             const codeToRun = `
-                import browser
                 from browser import window
 
                 def input(message):
