@@ -1,4 +1,11 @@
-document.addEventListener("DOMContentLoaded", async function () {
+let pyodide;
+
+async function initializePyodide() {
+    pyodide = await loadPyodide();
+    setupEditor();
+}
+
+function setupEditor() {
     const codeEditor = document.getElementById("code-editor");
 
     // Default text for the editor
@@ -12,9 +19,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         codeEditor.value = defaultText;
     }
 
-    // Initialize Pyodide
-    let pyodide = await loadPyodide();
-
     async function runCode() {
         const code = codeEditor.value;
         const outputElement = document.getElementById("output-window");
@@ -26,32 +30,22 @@ document.addEventListener("DOMContentLoaded", async function () {
             // Save current code to localStorage
             localStorage.setItem("pythonCode", code);
 
-            // Remove Python single-line comments
-            let filteredCode = code.replace(/#.*$/gm, '');
-
-            // Remove Python multi-line comments
-            filteredCode = filteredCode.replace(/(['"]{3})([\s\S]*?)\1/gm, '');
-
-            // Capture stdout and stderr and append output
-            pyodide.runPython(`
+            // Redirect stdout and stderr to capture print statements
+            await pyodide.runPythonAsync(`
                 import sys
                 import io
                 from js import window
 
-                # Redirect stdout to capture print statements
                 sys.stdout = io.StringIO()
                 sys.stderr = io.StringIO()
 
-                # Define custom input function
                 def input(prompt):
                     return window.prompt(prompt)
-                
-                # Execute the provided code
+
                 exec("""
-                ${filteredCode.replace(/\n/g, '\\n').replace(/"/g, '\\"')}
+                ${code.replace(/\n/g, '\\n').replace(/"/g, '\\"')}
                 """)
-                
-                # Get the output and display it
+
                 window.outputElement.textContent = sys.stdout.getvalue() + sys.stderr.getvalue()
             `);
         } catch (error) {
@@ -113,4 +107,4 @@ document.addEventListener("DOMContentLoaded", async function () {
         link.download = 'main.py'; // Save as main.py
         link.click(); // Trigger the download
     });
-});
+}
