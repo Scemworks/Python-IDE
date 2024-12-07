@@ -9,6 +9,7 @@ body {
     display: flex;
     height: calc(100vh - 50px); /* Adjust to allow space for footer */
     flex-direction: row; /* Default layout for larger screens */
+    overflow: hidden; /* Prevent scrolling */
 }
 
 .editor, .output {
@@ -28,6 +29,8 @@ body {
 
 h2 {
     margin-top: 0;
+    font-size: 1.5rem;
+    color: #333;
 }
 
 textarea {
@@ -46,17 +49,20 @@ textarea {
 
 button {
     margin-top: 10px;
-    padding: 10px 20px;
+    padding: 12px 24px;
     font-size: 16px;
     color: #fff;
     background-color: #007bff;
     border: none;
-    border-radius: 5px;
+    border-radius: 25px;
     cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 button:hover {
     background-color: #0056b3;
+    transform: translateY(-2px);
 }
 
 #output-window {
@@ -83,16 +89,17 @@ button:hover {
     }
 
     textarea {
-        height: calc(70% - 20px); /* Reduce height slightly to fit better on smaller screens */
+        height: calc(65% - 20px); /* Reduce height slightly to fit better on smaller screens */
     }
 
     #output-window {
-        height: calc(70% - 20px);
+        height: calc(65% - 20px);
     }
 
     button {
         font-size: 14px; /* Slightly smaller button text */
-        padding: 8px 16px;
+        padding: 10px 18px;
+        border-radius: 20px;
     }
 }
 
@@ -106,7 +113,12 @@ button:hover {
     }
 
     button {
-        padding: 6px 12px; /* Smaller padding for buttons */
+        padding: 8px 16px; /* Smaller padding for buttons */
+    }
+
+    footer {
+        font-size: 12px; /* Adjust footer font for smaller screens */
+        padding: 8px;
     }
 }
 
