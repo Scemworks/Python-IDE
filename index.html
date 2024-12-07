@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Python IDE</title>
     <link rel="stylesheet" href="styles/styles.css">
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.18.1/full/pyodide.js"></script>
-    <script src="scripts/script.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.11.0/brython.min.js"></script>
 </head>
-<body onload="initializePyodide()">
+<body onload="brython()">
     <div class="container">
         <!-- Left Column: Code Editor -->
         <div class="editor">
@@ -30,5 +29,7 @@
     <footer>
         <p>Developed with ♥️ by <a href="https://www.github.com/Scemworks" target="_blank">Scemworks</a></p>
     </footer>
+
+    <script src="scripts/script.js"></script>
 </body>
 </html>
