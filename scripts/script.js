@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             const inputValue = inputField.value;
                             resolve(inputValue);
                             outputElement.removeChild(inputContainer);
-                            outputElement.textContent += `${message} ${inputValue}\n`;
+                            outputElement.textContent += `${message}${inputValue}\n`;
                         }
                     });
                 });
@@ -71,8 +71,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 return result;
             };
 
+            // Prepare the Python code to be executed
+            const codeToRun = `
+                import browser
+                from browser import window
+
+                def input(message):
+                    return window.prompt(message)
+
+                ${filteredCode}
+            `;
+
             // Run the filtered code
-            eval(await __BRYTHON__.python_to_js(filteredCode));
+            eval(await __BRYTHON__.python_to_js(codeToRun));
         } catch (error) {
             outputElement.textContent = `Error: ${error.message}`;
         }
