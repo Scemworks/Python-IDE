@@ -12,32 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
         codeEditor.value = defaultText;
     }
 
-    // Custom input handling
-    window.customInput = async function(message) {
-        const outputElement = document.getElementById("output-window");
-        const inputContainer = document.createElement("div");
-        const inputMessage = document.createElement("span");
-        inputMessage.textContent = message;
-        const inputField = document.createElement("input");
-        inputField.type = "text";
-        inputField.id = "custom-input";
-        inputContainer.appendChild(inputMessage);
-        inputContainer.appendChild(inputField);
-        outputElement.appendChild(inputContainer);
-
-        return new Promise((resolve) => {
-            inputField.addEventListener("keydown", function (e) {
-                if (e.key === "Enter") {
-                    const inputValue = inputField.value;
-                    resolve(inputValue);
-                    outputElement.removeChild(inputContainer);
-                    outputElement.textContent += `${message}${inputValue}\n`;
-                }
-            });
-        });
-    };
-
-    async function runCode() {
+    function runCode() {
         const code = codeEditor.value;
         const outputElement = document.getElementById("output-window");
 
@@ -66,24 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 outputElement.textContent += data;
             };
 
-            // Override the built-in input function in Brython
-            window.prompt = async function(message) {
-                const result = await window.customInput(message);
-                return result;
-            };
-
-            // Prepare the Python code to be executed
-            const codeToRun = `
-                from browser import window
-
-                def input(message):
-                    return window.prompt(message)
-
-                ${filteredCode}
-            `;
-
             // Run the filtered code
-            eval(await __BRYTHON__.python_to_js(codeToRun));
+            eval(__BRYTHON__.python_to_js(filteredCode));
         } catch (error) {
             outputElement.textContent = `Error: ${error.message}`;
         }
