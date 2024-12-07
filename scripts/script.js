@@ -1,11 +1,4 @@
-let pyodide;
-
-async function initializePyodide() {
-    pyodide = await loadPyodide();
-    setupEditor();
-}
-
-function setupEditor() {
+document.addEventListener("DOMContentLoaded", function () {
     const codeEditor = document.getElementById("code-editor");
 
     // Default text for the editor
@@ -19,7 +12,7 @@ function setupEditor() {
         codeEditor.value = defaultText;
     }
 
-    async function runCode() {
+    function runCode() {
         const code = codeEditor.value;
         const outputElement = document.getElementById("output-window");
 
@@ -30,24 +23,26 @@ function setupEditor() {
             // Save current code to localStorage
             localStorage.setItem("pythonCode", code);
 
-            // Redirect stdout and stderr to capture print statements
-            await pyodide.runPythonAsync(`
-                import sys
-                import io
-                from js import window
+            // Remove Python single-line comments
+            let filteredCode = code.replace(/#.*$/gm, '');
 
-                sys.stdout = io.StringIO()
-                sys.stderr = io.StringIO()
+            // Remove Python multi-line comments
+            filteredCode = filteredCode.replace(/(['"]{3})([\s\S]*?)\1/gm, '');
 
-                def input(prompt):
-                    return window.prompt(prompt)
+            // Ensure Brython context is used
+            brython(1);
 
-                exec("""
-                ${code.replace(/\n/g, '\\n').replace(/"/g, '\\"')}
-                """)
+            // Capture stdout and stderr and append output
+            window.$B.stdout.write = function(data) {
+                outputElement.textContent += data;
+            };
 
-                window.outputElement.textContent = sys.stdout.getvalue() + sys.stderr.getvalue()
-            `);
+            window.$B.stderr.write = function(data) {
+                outputElement.textContent += data;
+            };
+
+            // Run the filtered code
+            eval(__BRYTHON__.python_to_js(filteredCode));
         } catch (error) {
             outputElement.textContent = `Error: ${error.message}`;
         }
@@ -107,4 +102,4 @@ function setupEditor() {
         link.download = 'main.py'; // Save as main.py
         link.click(); // Trigger the download
     });
-}
+});
