@@ -4,11 +4,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Default text for the editor
     const defaultText = `# Write your Python code here\n\nprint("Hello, World!")\nname = input("Enter your name: ")\nprint(f"Hello, {name}!")`;
 
-    // Load saved code from localStorage, if available
+    // Load saved code from localStorage
     const savedCode = localStorage.getItem("pythonCode");
     codeEditor.value = savedCode !== null ? savedCode : defaultText;
 
-    function runCode() {
+    async function runCode() {
         const code = codeEditor.value;
         const outputElement = document.getElementById("output-window");
 
@@ -19,21 +19,21 @@ document.addEventListener("DOMContentLoaded", function () {
             // Save the current code to localStorage
             localStorage.setItem("pythonCode", code);
 
-            // Remove Python single-line and multi-line comments
+            // Remove Python comments
             let filteredCode = code.replace(/#.*$/gm, '').replace(/(['"]{3})([\s\S]*?)\1/gm, '');
 
             // Ensure Brython context is used
             brython(1);
 
-            // Override input() for simulated interaction
-            window.input = function (prompt) {
+            // Simulated input() implementation
+            window.input = async function (prompt) {
                 return new Promise((resolve) => {
-                    // Append the prompt to the output window
+                    // Display the prompt in the output window
                     const promptText = document.createElement("span");
                     promptText.textContent = prompt;
                     outputElement.appendChild(promptText);
 
-                    // Create an input field for user input
+                    // Create an input field for the user to type their response
                     const inputField = document.createElement("input");
                     inputField.type = "text";
                     inputField.style.display = "inline-block";
@@ -49,12 +49,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (event.key === "Enter") {
                             const userInput = inputField.value;
 
-                            // Display user input in the output window
+                            // Append the user's input as text (like a console log)
                             const userText = document.createElement("span");
                             userText.textContent = ` ${userInput}\n`;
                             outputElement.appendChild(userText);
 
-                            // Remove the input field
+                            // Remove the input field after capturing input
                             outputElement.removeChild(inputField);
 
                             resolve(userInput);
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 outputElement.textContent += data;
             };
 
-            // Convert Python code to JavaScript and execute it
+            // Convert Python code to JS and execute
             eval(__BRYTHON__.python_to_js(filteredCode));
         } catch (error) {
             outputElement.textContent = `Error: ${error.message}`;
