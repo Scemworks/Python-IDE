@@ -56,9 +56,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 return new Promise((resolve) => {
                     inputField.addEventListener("keydown", function (e) {
                         if (e.key === "Enter") {
-                            resolve(inputField.value);
+                            const inputValue = inputField.value;
+                            resolve(inputValue);
                             outputElement.removeChild(inputContainer);
-                            outputElement.textContent += `${message} ${inputField.value}\n`;
+                            outputElement.textContent += `${message} ${inputValue}\n`;
                         }
                     });
                 });
@@ -66,7 +67,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Override the built-in input function
             window.prompt = async function(message) {
-                return await window.customInput(message);
+                const result = await window.customInput(message);
+                return result;
             };
 
             // Run the filtered code
