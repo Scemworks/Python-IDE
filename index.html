@@ -6,8 +6,9 @@
     <title>Python IDE</title>
     <link rel="stylesheet" href="styles/styles.css">
     <script src="https://cdn.jsdelivr.net/pyodide/v0.18.1/full/pyodide.js"></script>
+    <script src="scripts/script.js"></script>
 </head>
-<body>
+<body onload="initializePyodide()">
     <div class="container">
         <!-- Left Column: Code Editor -->
         <div class="editor">
@@ -29,7 +30,5 @@
     <footer>
         <p>Developed with ♥️ by <a href="https://www.github.com/Scemworks" target="_blank">Scemworks</a></p>
     </footer>
-
-    <script src="scripts/script.js"></script> <!-- External JavaScript file -->
 </body>
 </html>
