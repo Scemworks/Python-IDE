@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
     const codeEditor = document.getElementById("code-editor");
 
     // Default text for the editor
@@ -12,7 +12,10 @@ document.addEventListener("DOMContentLoaded", function () {
         codeEditor.value = defaultText;
     }
 
-    function runCode() {
+    // Initialize Pyodide
+    let pyodide = await loadPyodide();
+
+    async function runCode() {
         const code = codeEditor.value;
         const outputElement = document.getElementById("output-window");
 
@@ -29,20 +32,28 @@ document.addEventListener("DOMContentLoaded", function () {
             // Remove Python multi-line comments
             filteredCode = filteredCode.replace(/(['"]{3})([\s\S]*?)\1/gm, '');
 
-            // Ensure Brython context is used
-            brython(1);
-
             // Capture stdout and stderr and append output
-            window.$B.stdout.write = function(data) {
-                outputElement.textContent += data;
-            };
+            pyodide.runPython(`
+                import sys
+                import io
+                from js import window
 
-            window.$B.stderr.write = function(data) {
-                outputElement.textContent += data;
-            };
+                # Redirect stdout to capture print statements
+                sys.stdout = io.StringIO()
+                sys.stderr = io.StringIO()
 
-            // Run the filtered code
-            eval(__BRYTHON__.python_to_js(filteredCode));
+                # Define custom input function
+                def input(prompt):
+                    return window.prompt(prompt)
+                
+                # Execute the provided code
+                exec("""
+                ${filteredCode.replace(/\n/g, '\\n').replace(/"/g, '\\"')}
+                """)
+                
+                # Get the output and display it
+                window.outputElement.textContent = sys.stdout.getvalue() + sys.stderr.getvalue()
+            `);
         } catch (error) {
             outputElement.textContent = `Error: ${error.message}`;
         }
