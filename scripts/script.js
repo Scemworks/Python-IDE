@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
         codeEditor.value = defaultText;
     }
 
-    function runCode() {
+    async function runCode() {
         const code = codeEditor.value;
         const outputElement = document.getElementById("output-window");
 
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
             };
 
             // Custom input handling
-            window.customInput = function(message) {
+            window.customInput = async function(message) {
                 const inputContainer = document.createElement("div");
                 const inputMessage = document.createElement("span");
                 inputMessage.textContent = message;
@@ -58,19 +58,19 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (e.key === "Enter") {
                             resolve(inputField.value);
                             outputElement.removeChild(inputContainer);
-                            outputElement.textContent += `${message}${inputField.value}\n`;
+                            outputElement.textContent += `${message} ${inputField.value}\n`;
                         }
                     });
                 });
             };
 
             // Override the built-in input function
-            window.prompt = function(message) {
-                return window.customInput(message);
+            window.prompt = async function(message) {
+                return await window.customInput(message);
             };
 
             // Run the filtered code
-            eval(__BRYTHON__.python_to_js(filteredCode));
+            eval(await __BRYTHON__.python_to_js(filteredCode));
         } catch (error) {
             outputElement.textContent = `Error: ${error.message}`;
         }
