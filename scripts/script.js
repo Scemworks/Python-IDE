@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const codeEditor = document.getElementById("code-editor");
 
     // Default text for the editor
-    const defaultText = `# Write your basic Python code here\n\n# Example of using complex numbers\nc1 = 3 + 4j\nc2 = 1 - 2j\nresult = c1 * c2\nprint("The result of multiplying c1 and c2 is:", result)`;
+    const defaultText = `# Write your basic Python code here\n\nprint("Hello, World")
 
     // Load saved code from localStorage, if available
     const savedCode = localStorage.getItem("pythonCode");
