@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const codeEditor = document.getElementById("code-editor");
 
     // Default text for the editor
-    const defaultText = "# Write your basic Python code here\n\nprint(\"Hello, World!\")";
+    const defaultText = `# Write your basic Python code here\n\n# Example of using complex numbers\nc1 = 3 + 4j\nc2 = 1 - 2j\nresult = c1 * c2\nprint("The result of multiplying c1 and c2 is:", result)`;
 
     // Load saved code from localStorage, if available
     const savedCode = localStorage.getItem("pythonCode");
@@ -17,32 +17,26 @@ document.addEventListener("DOMContentLoaded", function () {
         const outputElement = document.getElementById("output-window");
 
         // Clear previous output
-        outputElement.textContent = ""; 
+        outputElement.textContent = "";
 
         try {
             // Save current code to localStorage
             localStorage.setItem("pythonCode", code);
 
-            // Remove Python single-line comments
-            let filteredCode = code.replace(/#.*$/gm, '');
-
-            // Remove Python multi-line comments
-            filteredCode = filteredCode.replace(/(['"]{3})([\s\S]*?)\1/gm, '');
-
             // Ensure Brython context is used
             brython(1);
 
-            // Capture stdout and stderr and append output
-            window.$B.stdout.write = function(data) {
+            // Capture stdout and stderr to display output
+            window.$B.stdout.write = function (data) {
                 outputElement.textContent += data;
             };
 
-            window.$B.stderr.write = function(data) {
+            window.$B.stderr.write = function (data) {
                 outputElement.textContent += data;
             };
 
-            // Run the filtered code
-            eval(__BRYTHON__.python_to_js(filteredCode));
+            // Run the code using Brython
+            eval(__BRYTHON__.python_to_js(code));
         } catch (error) {
             outputElement.textContent = `Error: ${error.message}`;
         }
