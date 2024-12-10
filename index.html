@@ -1,12 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <!-- Basic Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python IDE</title>
+    <title>Python IDE - Run Python in Browser</title>
+    <meta name="description" content="Write, execute, and save Python code directly in your browser with this easy-to-use Python IDE. No installation required.">
+    <meta name="keywords" content="Python IDE, Online Python Editor, Run Python Code, Python in Browser">
+    <meta name="author" content="Scemworks">
     <link rel="stylesheet" href="styles/styles.css">
+
+    <!-- Open Graph Meta Tags (For Social Media Previews) -->
+    <meta property="og:title" content="Python IDE - Run Python in Browser">
+    <meta property="og:description" content="A simple Python IDE to write, execute, and save Python code directly in your browser.">
+    <meta property="og:image" content="https://python-ide-tau.vercel.app/images/python-ide-preview.png"> <!-- Replace with actual image URL -->
+    <meta property="og:url" content="https://python-ide-tau.vercel.app">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Python IDE - Run Python in Browser">
+    <meta name="twitter:description" content="Write, execute, and save Python code in your browser. No installation required!">
+    <meta name="twitter:image" content="https://python-ide-tau.vercel.app/images/python-ide-preview.png"> <!-- Replace with actual image URL -->
+
+    <!-- Script for Brython -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.11.0/brython.min.js"></script>
 </head>
+
 <body onload="brython()">
     <div class="container">
         <!-- Left Column: Code Editor -->
@@ -30,6 +51,8 @@
         <p>Developed with ♥️ by <a href="https://www.github.com/Scemworks" target="_blank">Scemworks</a></p>
     </footer>
 
+    <!-- JavaScript -->
     <script src="scripts/script.js"></script>
 </body>
+
 </html>
