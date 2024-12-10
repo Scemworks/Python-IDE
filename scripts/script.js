@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const codeEditor = document.getElementById("code-editor");
 
     // Default text for the editor
-    const defaultText = `# Write your basic Python code here\n\nprint("Hello, World")
+    const defaultText = `# Write your basic Python code here\n\nprint("Hello, World")`
 
     // Load saved code from localStorage, if available
     const savedCode = localStorage.getItem("pythonCode");
