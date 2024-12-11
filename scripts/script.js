@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const codeEditor = document.getElementById("code-editor");
 
     // Default text for the editor
-    const defaultText = `# Write your basic Python code here\n\nprint("Hello, World")`;
+    const defaultText = # Write your basic Python code here\n\nprint("Hello, World")
 
     // Load saved code from localStorage, if available
     const savedCode = localStorage.getItem("pythonCode");
@@ -23,10 +23,8 @@ document.addEventListener("DOMContentLoaded", function () {
             // Save current code to localStorage
             localStorage.setItem("pythonCode", code);
 
-            // Ensure Brython context is initialized correctly
-            if (!window.$B) {
-                brython();  // Initialize Brython if not already done
-            }
+            // Ensure Brython context is used
+            brython(1);
 
             // Capture stdout and stderr to display output
             window.$B.stdout.write = function (data) {
@@ -37,10 +35,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 outputElement.textContent += data;
             };
 
-            // Run the Python code using Brython
-            window.$B._run_script(code); // Ensure Brython runs the Python script properly
+            // Run the code using Brython
+            eval(__BRYTHON__.python_to_js(code));
         } catch (error) {
-            outputElement.textContent = `Error: ${error.message}`;
+            outputElement.textContent = Error: ${error.message};
         }
     }
 
@@ -61,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const afterCursor = code.substring(cursorPos);
 
             // Insert new line with the same indentation
-            textarea.value = `${beforeCursor}\n${indentation}${afterCursor}`;
+            textarea.value = ${beforeCursor}\n${indentation}${afterCursor};
 
             // Move cursor position after the inserted line
             textarea.selectionStart = textarea.selectionEnd = cursorPos + 1 + indentation.length;
